@@ -1,0 +1,38 @@
+body {
+	background-color: #321;
+	height: 100vh;
+    margin: 0;
+}
+
+canvas {
+	background-color: black;
+    display: block;
+	
+}
+
+/* Computadora */
+@media (min-width: 600px) {
+    body {
+        padding: 12px;
+        box-sizing: border-box;
+    }
+    canvas {
+        width: 600px;
+        margin: auto;
+    }
+}
+
+/* Celular */
+@media (max-width: 599px) {
+	canvas {
+        margin: 0;
+		width: 100%;
+		height: 100vw;
+	}
+}
+
+button {
+    display: block;
+	margin: 20px auto 0;
+    width: 120px;
+}
