@@ -1,24 +1,28 @@
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
-const btn = document.querySelector("#btn");
+const xVelnput = document.querySelector("#xVelInput");
+const yVelnput = document.querySelector("#yVelInput");
+const btnIniciar = document.querySelector("#btnIniciar");
+const btnLimpiar = document.querySelector("#btnLimpiar")
 
 canvas.width = 600;
 canvas.height = 600;
 
 const mult = 1;
-let xVel = 1.3 * mult;
-let yVel = 2 * mult;
-const radio = 2 * mult;
+let xVel = 10;
+let yVel = 11;
+const radio = 3;
 let x = radio;
 let y = radio;
-let hue = 0;
+let hue = 120;
 const hueVel = 360 / 127;
 
 let animacion = null;
-let pausado = false;
+let pausado = true;
+let iniciado = false
 
 function mueve() {
-	document.body.style.backgroundColor = `hsl(${hue}, 100%, 5%)`
+	document.body.style.backgroundColor = `hsl(${hue}, 100%, 5%)`;
 
 	//ctx.fillStyle = `hsl(${hue}, 100%, 50%)`;
 	ctx.fillStyle = `hsl(120, 100%, 50%)`;
@@ -40,15 +44,54 @@ function mueve() {
 	animacion = requestAnimationFrame(mueve);
 }
 
-btn.addEventListener("click", () => {
+function actualizarTextoBoton() {
+	if (!iniciado) {
+		btnIniciar.textContent = "Iniciar"
+	} else if (pausado) {
+		btnIniciar.textContent = "Reanudar"
+	} else {
+		btnIniciar.textContent = "Pausar"
+	}
+}
+
+function iniciarDesdeInputs() {
+	xVel = parseFloat(xVelnput.value);
+	yVel = parseFloat(yVelnput.value);
+
+	x = radio
+	y = radio
+	hue = 120
+
+	iniciado = true
+	pausado = false
+
+	actualizarTextoBoton()
+	mueve()
+}
+
+btnIniciar.addEventListener("click", () => {
+	if (!iniciado) {
+		iniciarDesdeInputs()
+		return
+	}
+
 	if (pausado) {
 		mueve();
-		btn.textContent = "Pausar";
 	} else {
 		cancelAnimationFrame(animacion);
-		btn.textContent = "Reanudar";
 	}
+
 	pausado = !pausado;
+	actualizarTextoBoton()
 });
 
-mueve();
+btnLimpiar.addEventListener("click", () => {
+	cancelAnimationFrame(animacion)
+
+	iniciado = false
+	pausado = true
+
+	ctx.clearRect(0, 0, canvas.width, canvas.height)
+	actualizarTextoBoton()
+})
+
